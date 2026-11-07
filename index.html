@@ -2855,7 +2855,7 @@ var e="script#wp-emoji-settings",t=document.querySelector(e);if(!(t instanceof H
     passes = 2; // Valor predeterminado: 2 lugares
   }
 
-  // --- 2. CONTROLADOR DE AUDIO ---
+  // --- 2. CONTROLADOR DE AUDIO CON AUTOPLAY ULTRA-SENSIBLE ---
   const audio = document.getElementById('wedding-audio');
   const musicBtn = document.getElementById('wedding-audio-btn');
   const pillHint = document.getElementById('audio-pill-hint');
@@ -2871,12 +2871,28 @@ var e="script#wp-emoji-settings",t=document.querySelector(e);if(!(t instanceof H
       if (pillText) pillText.textContent = '🎶 Sonando Hasta El Fin · Majo y Dan';
       setTimeout(function() {
         if (pillHint) pillHint.classList.add('fade-out');
-      }, 3500);
+      }, 4000);
     } else {
       if (musicBtn) musicBtn.classList.remove('is-playing');
       if (musicBtn) musicBtn.setAttribute('title', 'Reproducir música');
       if (pillText) pillText.textContent = '🎵 Toca para escuchar música';
       if (pillHint) pillHint.classList.remove('fade-out');
+    }
+  }
+
+  function playMusicGracefully() {
+    if (!audio) return;
+    audio.volume = 0.85;
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise.then(function() {
+        updateAudioUI(true);
+        hasInteracted = true;
+        removeTriggers();
+      }).catch(function() {
+        // Esperando interacción táctil o scroll del usuario
+        updateAudioUI(false);
+      });
     }
   }
 
@@ -2901,25 +2917,38 @@ var e="script#wp-emoji-settings",t=document.querySelector(e);if(!(t instanceof H
     });
   }
 
-  // Desbloqueo suave en la primera interacción táctil / scroll / click
-  function onFirstInteraction() {
+  // 1. Intento inmediato de autoplay al cargar el script, DOM y ventana
+  playMusicGracefully();
+  document.addEventListener('DOMContentLoaded', playMusicGracefully);
+  window.addEventListener('load', playMusicGracefully);
+
+  // 2. Disparador ultra-sensible: cualquier toque, deslizamiento, scroll o clic
+  const interactionEvents = [
+    'click', 'touchstart', 'touchend', 'pointerdown', 'mousedown',
+    'scroll', 'wheel', 'touchmove', 'keydown'
+  ];
+
+  function onFirstUserGesture() {
     if (hasInteracted) return;
     hasInteracted = true;
-    if (audio && audio.paused) {
-      audio.play().then(function() {
-        updateAudioUI(true);
-      }).catch(function() {
-        // En espera de clic manual en botón flotante
-      });
-    }
-    window.removeEventListener('click', onFirstInteraction);
-    window.removeEventListener('touchstart', onFirstInteraction);
-    window.removeEventListener('scroll', onFirstInteraction);
+    playMusicGracefully();
+    removeTriggers();
   }
 
-  window.addEventListener('click', onFirstInteraction, { passive: true });
-  window.addEventListener('touchstart', onFirstInteraction, { passive: true });
-  window.addEventListener('scroll', onFirstInteraction, { passive: true });
+  function removeTriggers() {
+    interactionEvents.forEach(function(evt) {
+      window.removeEventListener(evt, onFirstUserGesture, { capture: true });
+      document.removeEventListener(evt, onFirstUserGesture, { capture: true });
+      if (document.body) {
+        document.body.removeEventListener(evt, onFirstUserGesture, { capture: true });
+      }
+    });
+  }
+
+  interactionEvents.forEach(function(evt) {
+    window.addEventListener(evt, onFirstUserGesture, { capture: true, passive: true });
+    document.addEventListener(evt, onFirstUserGesture, { capture: true, passive: true });
+  });
 
   // --- 3. INYECCIÓN DE PASES Y FORMULARIO RSVP ---
   document.addEventListener('DOMContentLoaded', function() {
