@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=MonteCarlo&family=Parisienne&display=swap" rel="stylesheet">
+
 	<meta charset="UTF-8">
 		<meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
 
@@ -917,6 +921,52 @@ var _woocommerce_multi_currency_params = {"use_session":"cookie","do_not_reload_
   transform: translateX(-50%) translateY(0);
   opacity: 1;
 }
+
+/* --- TIPOGRAFÍA CALIGRÁFICA OFICIAL (SOLUCIÓN CORS PARA CHROME, SAFARI Y MÓVILES) --- */
+@font-face {
+  font-family: 'MonteCarlo';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/montecarlo.woff2') format('woff2'),
+       url('https://fonts.gstatic.com/s/montecarlo/v13/buEzpo6-f9X01GadLA0G4C0f_f5Iai0.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Parisienne';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/parisienne.woff2') format('woff2'),
+       url('https://fonts.gstatic.com/s/parisienne/v14/E21i_d3kivvAkxhLEVZpQyhwD8CtevI.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Nombres de los novios forzados con MonteCarlo y caligrafía fluida */
+.elementor-element-28078e88 .elementor-heading-title,
+.elementor-element-1433b91a .elementor-heading-title,
+.elementor-element-4f1e1589 .elementor-heading-title,
+.elementor-element-528b3598 .elementor-heading-title {
+  font-family: 'MonteCarlo', 'Parisienne', 'Great Vibes', 'Alex Brush', cursive, serif !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+  text-transform: none !important;
+  letter-spacing: 0px !important;
+  line-height: 1.15em !important;
+  color: #191919 !important;
+}
+
+/* Escala fluida y responsiva para que nunca se quiebre en líneas sueltas */
+.elementor-element-28078e88 .elementor-heading-title,
+.elementor-element-4f1e1589 .elementor-heading-title {
+  font-size: clamp(48px, 10vw, 80px) !important;
+}
+
+.elementor-element-1433b91a .elementor-heading-title {
+  font-size: clamp(32px, 7vw, 55px) !important;
+}
+
 </style>
 
 </head>
