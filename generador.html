@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Control de Pases y Enlaces — Boda Miguel Ángel y Karen Neptaly</title>
+
+  <!-- Google Fonts: Editorial Serif y Sans Grotesque -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script src="jspdf.umd.min.js"></script>
+  <script src="template_base64.js"></script>
+  <script>
+    if (!window.jspdf) {
+      document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"><\/script>');
+    }
+  </script>
+
+  <style>
+    :root {
+      --bg-canvas: #F8F6F2;
+      --card-bg: #FFFFFF;
+      --forest-dark: #244738;
+      --forest-deep: #1A362B;
+      --gold-deep: #8C7355;
+      --gold-accent: #B4A180;
+      --gold-soft: #F2ECE1;
+      --charcoal: #221C18;
+      --muted: #6E645A;
+      --line-subtle: #E6E0D5;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --shadow-paper: 0 1px 3px rgba(34, 28, 24, 0.04), 0 12px 28px -8px rgba(34, 28, 24, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-canvas);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--charcoal);
+      line-height: 1.55;
+      padding: 40px 18px 100px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .atelier-container {
+      width: 100%;
+      max-width: 740px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    /* Header */
+    .atelier-header {
+      background: var(--card-bg);
+      border: 1px solid var(--line-subtle);
+      border-radius: var(--radius-lg);
+      padding: 42px 32px 36px;
+      text-align: center;
+      box-shadow: var(--shadow-paper);
+    }
+
+    .seal-img {
+      width: 62px;
+      height: 62px;
+      display: block;
+      margin: 0 auto 16px;
+      border-radius: 50%;
+      filter: drop-shadow(0 4px 12px rgba(180, 161, 128, 0.35));
+    }
+
+    .eyebrow-text {
+      display: block;
+      font-family: 'Cinzel', serif;
+      font-size: 11.5px;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      color: var(--gold-deep);
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 38px;
+      font-weight: 500;
+      color: var(--charcoal);
+      letter-spacing: 0.5px;
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+
+    .atelier-desc {
+      font-size: 13.5px;
+      color: var(--muted);
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+
+    /* Main Workspace Card */
+    .atelier-card {
+      background: var(--card-bg);
+      border: 1px solid var(--line-subtle);
+      border-radius: var(--radius-lg);
+      padding: 34px 32px;
+      box-shadow: var(--shadow-paper);
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--gold-deep);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .label-meta {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0;
+      text-transform: none;
+      font-weight: 500;
+      color: var(--muted);
+    }
+
+    .input-text {
+      width: 100%;
+      padding: 14px 16px;
+      font-size: 19px;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      color: var(--charcoal);
+      background: #FAF8F5;
+      border: 1px solid var(--line-subtle);
+      border-radius: var(--radius-sm);
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .input-text:focus {
+      background: #FFFFFF;
+      border-color: var(--gold-deep);
+      box-shadow: 0 0 0 3px rgba(180, 161, 128, 0.15);
+    }
+
+    .input-text::placeholder {
+      font-size: 15px;
+      font-family: 'Inter', sans-serif;
+      color: #A3998F;
+      font-style: italic;
+    }
+
+    /* Passes Segment Control */
+    .passes-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+    }
+
+    .pass-btn {
+      background: #FAF8F5;
+      border: 1px solid var(--line-subtle);
+      border-radius: var(--radius-sm);
+      padding: 12px 0;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--charcoal);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pass-btn:hover {
+      background: var(--gold-soft);
+      border-color: var(--gold-accent);
+    }
+
+    .pass-btn.active {
+      background: var(--forest-dark);
+      border-color: var(--forest-dark);
+      color: #FFFFFF;
+      box-shadow: 0 4px 10px rgba(36, 71, 56, 0.22);
+    }
+
+    /* View Switcher */
+    .preview-switcher {
+      display: flex;
+      border-bottom: 1px solid var(--line-subtle);
+      margin-top: 6px;
+      gap: 20px;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      padding: 0 0 12px 0;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      position: relative;
+      transition: color 0.15s ease;
+    }
+
+    .tab-btn:hover {
+      color: var(--charcoal);
+    }
+
+    .tab-btn.active {
+      color: var(--forest-dark);
+    }
+
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--forest-dark);
+    }
+
+    /* Preview Canvas Wrapper */
+    .preview-stage {
+      background: #FAF8F5;
+      border: 1px solid var(--line-subtle);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 280px;
+    }
+
+    .canvas-card-frame {
+      max-width: 320px;
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 14px 34px -4px rgba(34, 28, 24, 0.15), 0 2px 6px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(180, 161, 128, 0.3);
+      background: #FFFFFF;
+      line-height: 0;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .canvas-card-frame:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 40px -4px rgba(34, 28, 24, 0.2), 0 3px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .canvas-card-frame::after {
+      content: '💌 Toca el sobre para abrir la invitación';
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(36, 71, 56, 0.92);
+      color: #FFFFFF;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 20px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0.92;
+      letter-spacing: 0.3px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      backdrop-filter: blur(4px);
+    }
+
+    .pdf-canvas {
+      width: 100%;
+      height: auto;
+      display: block;
+      cursor: pointer;
+    }
+
+    .btn-test-preview {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 12px;
+      padding: 10px 18px;
+      background: #FFFFFF;
+      border: 1px solid #D8CFC0;
+      color: var(--forest-dark);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      cursor: pointer;
+    }
+
+    .btn-test-preview:hover {
+      background: var(--gold-soft);
+      border-color: var(--gold-deep);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+
+    .stage-footnote {
+      margin-top: 14px;
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    /* WhatsApp Text Note */
+    .whatsapp-bubble-card {
+      width: 100%;
+      background: #FFFFFF;
+      border: 1px solid #E3DDD2;
+      border-left: 4px solid var(--forest-dark);
+      border-radius: var(--radius-sm);
+      padding: 20px 22px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 13.5px;
+      line-height: 1.7;
+      color: #26221F;
+      white-space: pre-wrap;
+      word-break: break-word;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+
+    /* Action Buttons */
+    .action-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .btn-main-action {
+      background: var(--forest-dark);
+      color: #FFFFFF;
+      border: 1px solid var(--forest-dark);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12.5px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-main-action:hover {
+      background: var(--forest-deep);
+      border-color: var(--forest-deep);
+      box-shadow: 0 6px 16px rgba(26, 54, 43, 0.25);
+    }
+
+    .btn-secondary-action {
+      background: #FFFFFF;
+      color: var(--charcoal);
+      border: 1px solid var(--line-subtle);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12.5px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-secondary-action:hover {
+      background: var(--gold-soft);
+      border-color: var(--gold-accent);
+      color: var(--charcoal);
+    }
+
+    .btn-aux-action {
+      grid-column: span 2;
+      background: transparent;
+      color: var(--forest-dark);
+      border: 1px solid rgba(36, 71, 56, 0.35);
+      border-radius: var(--radius-sm);
+      padding: 12px 18px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-aux-action:hover {
+      background: rgba(36, 71, 56, 0.05);
+      border-color: var(--forest-dark);
+    }
+
+    /* Accordion Settings */
+    details.atelier-details {
+      background: #FAF8F5;
+      border: 1px solid var(--line-subtle);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      font-size: 13px;
+    }
+
+    details.atelier-details summary {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11.5px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      outline: none;
+      user-select: none;
+    }
+
+    details.atelier-details summary:hover {
+      color: var(--charcoal);
+    }
+
+    .settings-inner {
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line-subtle);
+    }
+
+    .settings-field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .settings-field label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .settings-field input {
+      padding: 10px 12px;
+      font-size: 13px;
+      font-family: 'Inter', monospace;
+      background: #FFFFFF;
+      border: 1px solid var(--line-subtle);
+      border-radius: 6px;
+      color: var(--charcoal);
+    }
+
+    /* Historial */
+    .history-card {
+      background: var(--card-bg);
+      border: 1px solid var(--line-subtle);
+      border-radius: var(--radius-lg);
+      padding: 28px 32px;
+      box-shadow: var(--shadow-paper);
+    }
+
+    .history-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--line-subtle);
+      margin-bottom: 16px;
+    }
+
+    .history-title {
+      font-family: 'Cinzel', serif;
+      font-size: 14px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--charcoal);
+    }
+
+    .history-count-badge {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .history-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 14px;
+      background: #FAF8F5;
+      border: 1px solid var(--line-subtle);
+      border-radius: 8px;
+      gap: 12px;
+    }
+
+    .history-guest-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .history-guest-name {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--charcoal);
+      line-height: 1.2;
+    }
+
+    .history-guest-meta {
+      font-size: 11px;
+      color: var(--gold-deep);
+      letter-spacing: 0.5px;
+    }
+
+    .history-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-mini {
+      background: #FFFFFF;
+      border: 1px solid var(--line-subtle);
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--charcoal);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-mini:hover {
+      background: var(--gold-soft);
+      border-color: var(--gold-accent);
+    }
+
+    .btn-clear-history {
+      background: none;
+      border: none;
+      font-size: 11px;
+      color: #9C8F84;
+      cursor: pointer;
+      text-decoration: underline;
+      margin-top: 16px;
+      display: block;
+    }
+
+    .btn-clear-history:hover {
+      color: #7A3E3E;
+    }
+
+    /* Toast Notification */
+    .toast-pill {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #221C18;
+      color: #FFFFFF;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 500;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      z-index: 99999;
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+      letter-spacing: 0.3px;
+    }
+
+    .toast-pill.visible {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 20px 12px 60px;
+      }
+      .atelier-header, .atelier-card, .history-card {
+        padding: 24px 18px;
+      }
+      h1 {
+        font-size: 30px;
+      }
+      .action-row {
+        grid-template-columns: 1fr;
+      }
+      .btn-aux-action {
+        grid-column: span 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="atelier-container">
+
+    <!-- Atelier Header -->
+    <header class="atelier-header">
+      <img src="monograma_km_gold.png" alt="M y K" class="seal-img">
+      <span class="eyebrow-text">Miguel Ángel y Karen Neptaly · 19 de Diciembre de 2026</span>
+      <h1>Emisión de Pases y Enlaces</h1>
+      <p class="atelier-desc">Asignación de lugares reservados, generación de pases digitales interactivos en PDF y redacción personalizada para confirmación vía WhatsApp.</p>
+    </header>
+
+    <!-- Main Card -->
+    <main class="atelier-card">
+
+      <!-- Guest Name Input -->
+      <div class="form-group">
+        <label for="guest-name" class="form-group-label">
+          <span>Nombre del Invitado o Familia</span>
+          <span class="label-meta">Ej. Familia Morales Vega o Lic. Roberto Gómez</span>
+        </label>
+        <input type="text" id="guest-name" class="input-text" placeholder="Escribe el nombre aquí..." autofocus>
+      </div>
+
+      <!-- Passes Count Selector -->
+      <div class="form-group">
+        <div class="form-group-label">
+          <span>Lugares de Honor Reservados</span>
+          <span id="selected-pass-label" class="label-meta" style="color: var(--forest-dark); font-weight: 600;">2 lugares asignados</span>
+        </div>
+        <div class="passes-grid" id="passes-selector">
+          <button type="button" class="pass-btn" data-passes="1">1</button>
+          <button type="button" class="pass-btn active" data-passes="2">2</button>
+          <button type="button" class="pass-btn" data-passes="3">3</button>
+          <button type="button" class="pass-btn" data-passes="4">4</button>
+          <button type="button" class="pass-btn" data-passes="5">5</button>
+          <button type="button" class="pass-btn" data-passes="6">6</button>
+        </div>
+      </div>
+
+      <!-- View Switcher Tabs -->
+      <div class="preview-switcher">
+        <button type="button" class="tab-btn active" id="tab-pdf">Vista del Pase en PDF</button>
+        <button type="button" class="tab-btn" id="tab-whatsapp">Texto para WhatsApp</button>
+      </div>
+
+      <!-- Live Stage -->
+      <div class="preview-stage">
+        <!-- PDF Live Card Frame -->
+        <div id="pdf-preview-wrap" style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+          <div class="canvas-card-frame" id="canvas-card-frame" title="Haz clic en el sobre para abrir la invitación web">
+            <canvas id="pdf-canvas" class="pdf-canvas"></canvas>
+          </div>
+
+          <a id="btn-test-invite" href="#" target="_blank" class="btn-test-preview" title="Abre la invitación web con los pases de este invitado">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Probar invitación web en nueva pestaña
+          </a>
+
+          <p class="stage-footnote">✨ <strong>Interactivo:</strong> Haz clic en el sobre de arriba o en el botón para ver la invitación personalizada. En el PDF descargado, los visores móviles (iPhone/Android) abren el sobre con 1 toque una vez publicado en GitHub Pages.</p>
+        </div>
+
+        <!-- WhatsApp Text Message Note -->
+        <div id="preview-text" class="whatsapp-bubble-card" style="display: none;">Generando vista previa...</div>
+      </div>
+
+      <!-- Action Row -->
+      <div class="action-row">
+        <button type="button" class="btn-main-action" id="btn-download-pdf">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Descargar Pase PDF
+        </button>
+
+        <button type="button" class="btn-secondary-action" id="btn-copy-msg">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copiar Mensaje
+        </button>
+
+        <button type="button" class="btn-aux-action" id="btn-send-whatsapp">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+          Abrir en WhatsApp Web
+        </button>
+      </div>
+
+      <!-- Advanced Technical Options -->
+      <details class="atelier-details">
+        <summary>Opciones de Enlace y Destino</summary>
+        <div class="settings-inner">
+          <div class="settings-field">
+            <label for="base-url">URL de la Invitación Web</label>
+            <input type="text" id="base-url" placeholder="index.html o https://tu-usuario.github.io/boda/">
+          </div>
+          <div class="settings-field">
+            <label for="phone-karen">Teléfono WhatsApp de Confirmación</label>
+            <input type="tel" id="phone-karen" placeholder="525511926599">
+          </div>
+          <div class="settings-field">
+            <label for="url-iglesia">Enlace de Google Maps</label>
+            <input type="text" id="url-iglesia" placeholder="https://maps.app.goo.gl/...">
+          </div>
+        </div>
+      </details>
+
+    </main>
+
+    <!-- History Card -->
+    <section class="history-card">
+      <div class="history-header-row">
+        <span class="history-title">Registro de Pases Generados</span>
+        <span id="history-count" class="history-count-badge">0 invitaciones preparadas</span>
+      </div>
+      <ul class="history-list" id="history-list">
+        <li style="text-align: center; color: var(--muted); font-size: 13px; padding: 18px 0;">Aún no has generado ningún pase en esta sesión.</li>
+      </ul>
+      <button type="button" id="btn-clear-history" class="btn-clear-history">Vaciar registro histórico</button>
+    </section>
+
+  </div>
+
+  <!-- Minimalist Toast Notification -->
+  <div id="toast" class="toast-pill"></div>
+
+  <script>
+    (function() {
+      'use strict';
+
+      // Elementos del DOM
+      const guestInput = document.getElementById('guest-name');
+      const passButtons = document.querySelectorAll('.pass-btn');
+      const selectedPassLabel = document.getElementById('selected-pass-label');
+      const tabPdf = document.getElementById('tab-pdf');
+      const tabWhatsapp = document.getElementById('tab-whatsapp');
+      const pdfPreviewWrap = document.getElementById('pdf-preview-wrap');
+      const previewText = document.getElementById('preview-text');
+      const pdfCanvas = document.getElementById('pdf-canvas');
+      const phoneInput = document.getElementById('phone-karen');
+      const baseUrlInput = document.getElementById('base-url');
+      const urlIglesiaInput = document.getElementById('url-iglesia');
+      const btnDownloadPdf = document.getElementById('btn-download-pdf');
+      const btnCopy = document.getElementById('btn-copy-msg');
+      const btnSendWa = document.getElementById('btn-send-whatsapp');
+      const historyList = document.getElementById('history-list');
+      const historyCount = document.getElementById('history-count');
+      const btnClearHistory = document.getElementById('btn-clear-history');
+      const toast = document.getElementById('toast');
+
+      // Estado
+      let currentPasses = 2;
+
+      // Cargar configuraciones guardadas
+      phoneInput.value = localStorage.getItem('wedding_karen_phone') || '5511926599';
+      urlIglesiaInput.value = localStorage.getItem('wedding_url_iglesia') || 'https://maps.app.goo.gl/c7ES9MU53kmg3tYt6';
+
+      // Sanitización de URL base (soporta file:// local y https:// en GitHub Pages)
+      let defaultBase = '';
+      if (window.location.protocol === 'file:') {
+        defaultBase = window.location.href.split('?')[0].replace('generador.html', 'index.html');
+      } else {
+        defaultBase = window.location.origin + window.location.pathname.replace('generador.html', 'index.html');
+      }
+
+      let savedUrl = localStorage.getItem('wedding_base_url');
+      if (savedUrl && (savedUrl.startsWith('null/') || savedUrl.includes('null'))) {
+        localStorage.removeItem('wedding_base_url');
+        savedUrl = null;
+      }
+      baseUrlInput.value = savedUrl || defaultBase;
+      const btnTestInvite = document.getElementById('btn-test-invite');
+      const canvasCardFrame = document.getElementById('canvas-card-frame');
+
+      // Historial
+      let history = [];
+      try {
+        history = JSON.parse(localStorage.getItem('wedding_history') || '[]');
+      } catch (e) {
+        history = [];
+      }
+
+      function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add('visible');
+        setTimeout(() => toast.classList.remove('visible'), 2600);
+      }
+
+      // Switcher de pestañas
+      tabPdf.addEventListener('click', () => {
+        tabPdf.classList.add('active');
+        tabWhatsapp.classList.remove('active');
+        pdfPreviewWrap.style.display = 'flex';
+        previewText.style.display = 'none';
+      });
+
+      tabWhatsapp.addEventListener('click', () => {
+        tabWhatsapp.classList.add('active');
+        tabPdf.classList.remove('active');
+        pdfPreviewWrap.style.display = 'none';
+        previewText.style.display = 'block';
+      });
+
+      // Selector de pases
+      passButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+          passButtons.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          currentPasses = parseInt(this.getAttribute('data-passes'), 10);
+          updateAllPreviews();
+        });
+      });
+
+      // Generar URL completa
+      function buildInviteUrl(guest, passes) {
+        let base = baseUrlInput.value.trim() || defaultBase;
+        base = base.split('?')[0];
+
+        const params = new URLSearchParams();
+        if (guest && guest.trim()) {
+          params.set('invitado', guest.trim());
+        }
+        params.set('pases', passes);
+
+        const phone = phoneInput.value.trim().replace(/[^0-9]/g, '');
+        if (phone) {
+          params.set('tel', phone);
+        }
+
+        return base + '?' + params.toString();
+      }
+
+      function getWhatsAppRsvpUrl(guest, passes) {
+        const rawPhone = phoneInput.value.trim().replace(/[^0-9]/g, '') || '5511926599';
+        const phone = rawPhone.startsWith('52') ? rawPhone : ('52' + rawPhone);
+        const name = guest && guest.trim() ? guest.trim() : 'Familia y Amigos';
+        const pl = passes === 1 ? '1 lugar' : (passes + ' lugares');
+        const text = '¡Hola Miguel y Karen Neptaly! Con mucho gusto confirmamos nuestra asistencia (' + pl + ') para: ' + name + '. ¡Nos vemos en su boda!';
+        return 'https://api.whatsapp.com/send?phone=' + phone + '&text=' + encodeURIComponent(text);
+      }
+
+      // Generar texto cálido y digno para WhatsApp (sin clichés de IA)
+      function buildWhatsAppMessage(guest, passes) {
+        const inviteUrl = buildInviteUrl(guest, passes);
+        const nameGreeting = guest && guest.trim() ? guest.trim() : 'Familia y Amigos';
+
+        if (passes === 1) {
+          return '¡Hola ' + nameGreeting + '!\n\nCon enorme alegría y cariño, te compartimos tu Pase de Honor digital para nuestra boda.\n\nHemos reservado 1 lugar con mucho aprecio. En el siguiente enlace puedes abrir tu invitación interactiva y confirmar tu asistencia:\n\n' + inviteUrl + '\n\n¡Nos dará muchísimo gusto compartir este día tan especial contigo!\nMiguel Ángel y Karen Neptaly';
+        } else {
+          return '¡Hola ' + nameGreeting + '!\n\nCon enorme alegría y cariño, les compartimos su Pase de Honor digital para nuestra boda.\n\nHemos reservado ' + passes + ' lugares con mucho aprecio. En el siguiente enlace pueden abrir su invitación interactiva y confirmar su asistencia:\n\n' + inviteUrl + '\n\n¡Nos dará muchísimo gusto compartir este día tan especial con ustedes!\nMiguel Ángel y Karen Neptaly';
+        }
+      }
+
+      // Plantilla Maestra en Base64
+      const templateImg = new Image();
+      if (window.PASS_TEMPLATE_BASE64) {
+        templateImg.src = window.PASS_TEMPLATE_BASE64;
+      } else {
+        templateImg.src = 'pase_template_base.jpg';
+      }
+      templateImg.onload = () => {
+        updateAllPreviews();
+      };
+
+      // Dibujar pase en Canvas (1080 x 1920)
+      function renderPassOnCanvas(guest, passes) {
+        const ctx = pdfCanvas.getContext('2d');
+        const W = 1080;
+        const H = 1920;
+        pdfCanvas.width = W;
+        pdfCanvas.height = H;
+
+        // 1. Plantilla
+        if (templateImg.complete && templateImg.naturalWidth > 0) {
+          ctx.drawImage(templateImg, 0, 0, W, H);
+        } else {
+          ctx.fillStyle = '#FFFFFF';
+          ctx.fillRect(0, 0, W, H);
+        }
+
+        // 2. Tipografía en Baskerville / Cormorant Garamond
+        function toTitleCase(str) {
+          return str.toLowerCase().split(' ').map(function(word, idx) {
+            if (!word) return '';
+            const lowers = ['de', 'del', 'la', 'las', 'los', 'y', 'e'];
+            if (idx > 0 && lowers.includes(word)) return word;
+            return word.charAt(0).toUpperCase() + word.slice(1);
+          }).join(' ');
+        }
+
+        const rawGuest = guest && guest.trim() ? guest.trim() : 'Familia y Amigos';
+        const displayName = toTitleCase(rawGuest);
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(50, 1060, W - 100, 120);
+
+        ctx.fillStyle = '#221C18';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        let nameSize = 42;
+        ctx.font = '400 ' + nameSize + 'px "Baskerville", "Cormorant Garamond", Georgia, serif';
+        while (ctx.measureText(displayName).width > 880 && nameSize > 22) {
+          nameSize -= 2;
+          ctx.font = '400 ' + nameSize + 'px "Baskerville", "Cormorant Garamond", Georgia, serif';
+        }
+        ctx.fillText(displayName, W / 2, 1080);
+
+        const passesText = passes === 1 ? '1 LUGAR DE HONOR RESERVADO' : (passes + ' LUGARES DE HONOR RESERVADOS');
+        ctx.font = '600 20px "Montserrat", Arial, sans-serif';
+        ctx.fillStyle = '#6E5A49';
+        ctx.letterSpacing = '2px';
+        ctx.fillText(passesText, W / 2, 1135);
+      }
+
+      function updateAllPreviews() {
+        const guest = guestInput.value.trim();
+        const pasesStr = currentPasses === 1 ? '1 lugar reservado' : (currentPasses + ' lugares reservados');
+        selectedPassLabel.textContent = pasesStr;
+
+        const inviteUrl = buildInviteUrl(guest, currentPasses);
+        if (btnTestInvite) {
+          btnTestInvite.href = inviteUrl;
+        }
+
+        previewText.textContent = buildWhatsAppMessage(guest, currentPasses);
+        renderPassOnCanvas(guest, currentPasses);
+      }
+
+      guestInput.addEventListener('input', updateAllPreviews);
+
+      phoneInput.addEventListener('change', () => {
+        localStorage.setItem('wedding_karen_phone', phoneInput.value.trim());
+        updateAllPreviews();
+      });
+
+      baseUrlInput.addEventListener('change', () => {
+        localStorage.setItem('wedding_base_url', baseUrlInput.value.trim());
+        updateAllPreviews();
+      });
+
+      urlIglesiaInput.addEventListener('change', () => {
+        localStorage.setItem('wedding_url_iglesia', urlIglesiaInput.value.trim());
+      });
+
+      // Historial
+      function saveToHistory(guest, passes) {
+        const item = {
+          guest: guest || 'Familia y Amigos',
+          passes: passes,
+          date: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        };
+        history.unshift(item);
+        if (history.length > 50) history.pop();
+        try {
+          localStorage.setItem('wedding_history', JSON.stringify(history));
+        } catch (e) {}
+        renderHistory();
+      }
+
+      function renderHistory() {
+        if (!historyList) return;
+        historyList.innerHTML = '';
+
+        if (history.length === 0) {
+          historyList.innerHTML = '<li style="text-align: center; color: var(--muted); font-size: 13px; padding: 18px 0;">Aún no has generado ningún pase en esta sesión.</li>';
+          historyCount.textContent = '0 invitaciones preparadas';
+          return;
+        }
+
+        const totalPasses = history.reduce((acc, cur) => acc + cur.passes, 0);
+        historyCount.textContent = history.length + ' pases preparados · ' + totalPasses + ' lugares en total';
+
+        history.forEach((item, index) => {
+          const li = document.createElement('li');
+          li.className = 'history-item';
+          li.innerHTML = `
+            <div class="history-guest-info">
+              <span class="history-guest-name">${item.guest}</span>
+              <span class="history-guest-meta">${item.passes === 1 ? '1 lugar' : item.passes + ' lugares'} · Generado a las ${item.date}</span>
+            </div>
+            <div class="history-actions">
+              <button type="button" class="btn-mini btn-copy-mini" data-idx="${index}">Copiar enlace</button>
+            </div>
+          `;
+
+          const btnCopyMini = li.querySelector('.btn-copy-mini');
+          btnCopyMini.addEventListener('click', () => {
+            const msg = buildWhatsAppMessage(item.guest, item.passes);
+            navigator.clipboard.writeText(msg).then(() => {
+              showToast('✓ Mensaje copiado para ' + item.guest);
+            });
+          });
+
+          historyList.appendChild(li);
+        });
+      }
+
+      btnClearHistory.addEventListener('click', () => {
+        if (confirm('¿Deseas reiniciar la lista de pases preparados?')) {
+          history = [];
+          localStorage.removeItem('wedding_history');
+          renderHistory();
+          showToast('Registro vaciado');
+        }
+      });
+
+      // Descargar PDF Interactivo
+      function downloadPdfForGuest(guest, passes) {
+        showToast('Generando Pase en PDF de alta fidelidad...');
+        renderPassOnCanvas(guest, passes);
+
+        setTimeout(() => {
+          try {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({
+              orientation: 'portrait',
+              unit: 'pt',
+              format: [540, 960]
+            });
+
+            const imgData = pdfCanvas.toDataURL('image/jpeg', 0.94);
+            doc.addImage(imgData, 'JPEG', 0, 0, 540, 960);
+
+            const webUrl = buildInviteUrl(guest, passes);
+            const iglesiaUrl = urlIglesiaInput.value.trim() || 'https://maps.app.goo.gl/c7ES9MU53kmg3tYt6';
+            const whatsappUrl = getWhatsAppRsvpUrl(guest, passes);
+
+            // 1. Vínculo sobre
+            doc.link(82.5, 255, 375, 273.5, { url: webUrl });
+            // 2. Botón 1: Maps
+            doc.link(130, 602.5, 280, 44, { url: iglesiaUrl });
+            // 3. Botón 2: WhatsApp
+            doc.link(130, 659, 280, 44, { url: whatsappUrl });
+
+            const cleanSlug = (guest || 'Invitado').replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ]/g, '_');
+            const filename = `Pase_Boda_Miguel_y_Karen_${cleanSlug}.pdf`;
+            doc.save(filename);
+
+            saveToHistory(guest || 'Familia y Amigos', passes);
+            showToast('✓ Pase PDF descargado correctamente');
+          } catch (err) {
+            console.error('Error al generar PDF:', err);
+            showToast('No fue posible generar el PDF.');
+          }
+        }, 200);
+      }
+
+      btnDownloadPdf.addEventListener('click', () => {
+        const guest = guestInput.value.trim() || 'Familia y Amigos';
+        downloadPdfForGuest(guest, currentPasses);
+      });
+
+      btnCopy.addEventListener('click', function() {
+        const guest = guestInput.value.trim() || 'Familia y Amigos';
+        const msg = buildWhatsAppMessage(guest, currentPasses);
+
+        navigator.clipboard.writeText(msg).then(() => {
+          showToast('✓ Mensaje copiado al portapapeles');
+          saveToHistory(guest, currentPasses);
+        }).catch(() => {
+          const ta = document.createElement('textarea');
+          ta.value = msg;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          showToast('✓ Mensaje copiado al portapapeles');
+          saveToHistory(guest, currentPasses);
+        });
+      });
+
+      btnSendWa.addEventListener('click', function() {
+        const guest = guestInput.value.trim() || 'Familia y Amigos';
+        const msg = buildWhatsAppMessage(guest, currentPasses);
+        saveToHistory(guest, currentPasses);
+
+        const waUrl = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(msg);
+        window.open(waUrl, '_blank');
+      });
+
+      // --- INTERACTIVIDAD EN VIVO DEL SOBRE Y BOTONES EN EL CANVAS ---
+      function handleCanvasInteraction(e) {
+        const rect = pdfCanvas.getBoundingClientRect();
+        const relY = (e.clientY - rect.top) / rect.height;
+        const guest = guestInput.value.trim();
+
+        // 1. Zona Sobre Interactivo (22% a 56% de la altura)
+        if (relY >= 0.22 && relY <= 0.56) {
+          const url = buildInviteUrl(guest, currentPasses);
+          window.open(url, '_blank');
+          showToast('💌 Abriendo invitación web personalizada...');
+          return;
+        }
+
+        // 2. Zona Botón Maps (61% a 67% de la altura)
+        if (relY >= 0.61 && relY <= 0.67) {
+          const iglesiaUrl = urlIglesiaInput.value.trim() || 'https://maps.app.goo.gl/c7ES9MU53kmg3tYt6';
+          window.open(iglesiaUrl, '_blank');
+          showToast('📍 Abriendo ubicación en Google Maps...');
+          return;
+        }
+
+        // 3. Zona Botón WhatsApp (67.5% a 74% de la altura)
+        if (relY >= 0.675 && relY <= 0.74) {
+          const waUrl = getWhatsAppRsvpUrl(guest, currentPasses);
+          window.open(waUrl, '_blank');
+          showToast('💬 Abriendo confirmación por WhatsApp...');
+          return;
+        }
+
+        // Si da clic en cualquier otra parte del pase, abre la invitación web
+        const defaultUrl = buildInviteUrl(guest, currentPasses);
+        window.open(defaultUrl, '_blank');
+        showToast('💌 Abriendo invitación web...');
+      }
+
+      pdfCanvas.addEventListener('click', handleCanvasInteraction);
+
+      pdfCanvas.addEventListener('mousemove', (e) => {
+        const rect = pdfCanvas.getBoundingClientRect();
+        const relY = (e.clientY - rect.top) / rect.height;
+
+        if (relY >= 0.22 && relY <= 0.56) {
+          pdfCanvas.style.cursor = 'pointer';
+          pdfCanvas.title = '💌 Haz clic para abrir la invitación web personalizada';
+        } else if (relY >= 0.61 && relY <= 0.67) {
+          pdfCanvas.style.cursor = 'pointer';
+          pdfCanvas.title = '📍 Haz clic para abrir Google Maps';
+        } else if (relY >= 0.675 && relY <= 0.74) {
+          pdfCanvas.style.cursor = 'pointer';
+          pdfCanvas.title = '💬 Haz clic para confirmar por WhatsApp';
+        } else {
+          pdfCanvas.style.cursor = 'pointer';
+          pdfCanvas.title = 'Haz clic para abrir la invitación web';
+        }
+      });
+
+      if (document.fonts) {
+        document.fonts.ready.then(() => {
+          updateAllPreviews();
+        });
+      } else {
+        setTimeout(updateAllPreviews, 500);
+      }
+
+      renderHistory();
+    })();
+  </script>
+</body>
+</html>
